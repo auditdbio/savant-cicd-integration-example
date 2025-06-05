@@ -1,66 +1,93 @@
-## Foundry
+# MyToken - ERC20 Token
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This is an ERC20 token project created using Foundry and OpenZeppelin Contracts.
 
-Foundry consists of:
+## Description
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+MyToken is a standard ERC20 token with additional features:
+- Token minting (owner only)
+- Token burning
+- Access control management through Ownable
 
-## Documentation
+## Technical Specifications
 
-https://book.getfoundry.sh/
+- **Name**: MyToken
+- **Symbol**: MTK
+- **Decimals**: 18
+- **Initial Supply**: 1,000,000 tokens
+- **Standard**: ERC20
 
-## Usage
+## Functions
 
-### Build
+### Standard ERC20 functions:
+- `transfer(address to, uint256 amount)` - Transfer tokens
+- `approve(address spender, uint256 amount)` - Approve spending
+- `transferFrom(address from, address to, uint256 amount)` - Transfer on behalf of another address
+- `balanceOf(address account)` - Account balance
+- `allowance(address owner, address spender)` - Approved amount for spending
 
-```shell
-$ forge build
+### Additional functions:
+- `mint(address to, uint256 amount)` - Mint tokens (owner only)
+- `burn(uint256 amount)` - Burn own tokens
+- `burnFrom(address account, uint256 amount)` - Burn tokens from another account (with approval)
+
+## Installation
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd soldility-cicd-test
+
+# Install dependencies
+forge install
+
+# Compile contracts
+forge build
 ```
 
-### Test
+## Testing
 
-```shell
-$ forge test
+```bash
+# Run all tests
+forge test
+
+# Run tests with verbose output
+forge test -v
+
+# Run specific test
+forge test --match-test test_Transfer
 ```
 
-### Format
+## Deployment
 
-```shell
-$ forge fmt
+```bash
+# Deploy to local network
+forge script script/MyToken.s.sol --fork-url http://localhost:8545 --broadcast
+
+# Deploy to testnet (e.g., Sepolia)
+forge script script/MyToken.s.sol --fork-url $SEPOLIA_RPC_URL --broadcast --verify
 ```
 
-### Gas Snapshots
+## Project Structure
 
-```shell
-$ forge snapshot
+```
+├── src/
+│   └── MyToken.sol          # Main token contract
+├── script/
+│   └── MyToken.s.sol        # Deployment script
+├── test/
+│   └── MyToken.t.sol        # Tests
+├── lib/
+│   └── openzeppelin-contracts/  # OpenZeppelin libraries
+└── foundry.toml             # Foundry configuration
 ```
 
-### Anvil
+## Security
 
-```shell
-$ anvil
-```
+The contract uses verified OpenZeppelin libraries:
+- `ERC20.sol` - Standard ERC20 implementation
+- `Ownable.sol` - Access control management
 
-### Deploy
+## License
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+UNLICENSED
