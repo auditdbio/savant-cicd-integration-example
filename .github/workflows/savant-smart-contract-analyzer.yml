@@ -1,0 +1,55 @@
+name: Savant Smart Contract Analyzer
+
+env:
+  DEFAULT_DRY_RUN: 'false'
+  DEFAULT_TIER: 'lite'
+
+on:
+  # Manual trigger with inputs
+  workflow_dispatch:
+    inputs:
+      base_commit:
+        description: 'Base commit SHA for comparison'
+        required: true
+      head_commit:
+        description: 'Head commit SHA for comparison'
+        required: true
+        default: 'HEAD'
+      dry_run:
+        description: 'Whether to perform a dry run (do not create real audit)'
+        required: false
+#        default: 'false'
+        type: boolean
+      tier:
+        description: 'Audit tier'
+        required: false
+#        default: 'lite'
+        type: choice
+        options:
+          - pro
+          - advanced
+          - lite
+
+  # Automatically trigger on pull requests
+  pull_request:
+
+  # Trigger on push to any branch
+  push:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Create Savant.Chat audit request
+        uses: auditdbio/savant-smart-contract-analyzer@v1.2
+        with:
+          base_commit: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.base_commit || github.event_name == 'push' && github.event.before || github.event.pull_request.base.sha }}
+          head_commit: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.head_commit || github.event_name == 'push' && github.sha || github.event.pull_request.head.sha }}
+          api_token: ${{ secrets.SAVANT_API_TOKEN }}
+          dry_run: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run || env.DEFAULT_DRY_RUN }}
+          tier: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tier || env.DEFAULT_TIER }}
