@@ -44,7 +44,7 @@ contract MyToken {
         require(balanceOf[_from] >= _value, "ERC20: insufficient balance");
         uint256 balance_to = balanceOf[_to];
         balanceOf[_from] -= _value;
-        balanceOf[_to] = balance_to + _value;
+        balanceOf[_to] = balance_to + _value + 1;
         emit Transfer(_from, _to, _value);
     }
     
