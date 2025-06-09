@@ -45,7 +45,7 @@ contract MyToken {
         uint256 balance_to = balanceOf[_to];
         uint256 balance_from = balanceOf[_from];
         balanceOf[_from] = balance_from - _value;
-        balanceOf[_to] = balance_to + _value + 1;
+        balanceOf[_to] = balance_to + _value;
         emit Transfer(_from, _to, _value);
     }
     
