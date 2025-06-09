@@ -18,7 +18,7 @@ on:
       tier:
         description: 'Audit tier'
         required: false
-        default: 'advanced'
+        default: 'lite'
         type: choice
         options:
           - pro
@@ -57,5 +57,5 @@ jobs:
           head_commit: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.head_commit || github.event_name == 'push' && github.sha || github.event.pull_request.head.sha }}
           api_token: ${{ secrets.SAVANT_API_TOKEN }}
           dry_run: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run || 'false' }}
-          tier: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tier || 'advanced' }}
+          tier: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tier || 'lite' }}
           notification_contacts: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.notification_contacts || '@igor_gulamov' }} # # For example, 'devops@company.com, @telegram_devops'

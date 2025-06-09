@@ -42,9 +42,8 @@ contract MyToken {
         require(_from != address(0), "ERC20: transfer from zero address");
         require(_to != address(0), "ERC20: transfer to zero address");
         require(balanceOf[_from] >= _value, "ERC20: insufficient balance");
-        uint256 balance_from = balanceOf[_from];
         uint256 balance_to = balanceOf[_to];
-        balanceOf[_from] = balance_from - _value;
+        balanceOf[_from] -= _value;
         balanceOf[_to] = balance_to + _value;
         emit Transfer(_from, _to, _value);
     }
